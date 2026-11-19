@@ -1,0 +1,15 @@
+{
+  "name": "digital-ai-bot",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -k -n backend,frontend -c blue,green \"npm:dev:backend\" \"npm:dev:frontend\"",
+    "dev:backend": "npm --prefix BotBackend run dev",
+    "dev:frontend": "npm --prefix BotFrontend run dev -- --host 0.0.0.0",
+    "build": "npm --prefix BotFrontend run build",
+    "start": "npm --prefix BotBackend start"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
