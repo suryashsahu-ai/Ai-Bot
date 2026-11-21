@@ -20,14 +20,11 @@ const app = express();
 const port = process.env.PORT || 8000;
 
 // Allowed frontend URLs
-const allowedOrigins = (
-    process.env.FRONTEND_URL || 'https://ai-bot-6ywf-3omfqbacv-bairagan.vercel.app'
-)
-    .split(',')
-    .map(origin => origin.trim().replace(/\/$/, ''))
-    .filter(Boolean);
 
-console.log('Allowed Origins:', allowedOrigins);
+const allowedOrigins = [
+    'http://localhost:5173',
+    'https://ai-bot-6ywf-3omfqbacv-bairagan.vercel.app'
+];
 
 const corsOptions = {
     origin: function (origin, callback) {
@@ -42,6 +39,9 @@ const corsOptions = {
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 };
+
+app.use(cors(corsOptions));
+
 
 // Middleware
 app.use(cors(corsOptions));
