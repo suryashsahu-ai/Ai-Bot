@@ -1,4 +1,4 @@
-const API_BASE = `${(import.meta.env.VITE_API_URL || '').replace(/\/$/, '')}/api/auth`
+const API_BASE = `${(import.meta.env.VITE_API_URL || `http://localhost:${import.meta.env.PORT || 8000}`).replace(/\/$/, '')}/api/auth`
 console.log(API_BASE)
 export const authApi = {
   login: (email, password) =>

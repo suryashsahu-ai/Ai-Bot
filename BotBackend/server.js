@@ -19,11 +19,15 @@ const connectDb = require('./config/db');
 const app = express();
 const port = process.env.PORT || 8000;
 
-// Read allowed frontend URLs
-const allowedOrigins = (process.env.FRONTEND_URL || '')
+// Allowed frontend URLs
+const allowedOrigins = (
+    process.env.FRONTEND_URL || 'http://localhost:5173'
+)
     .split(',')
     .map(origin => origin.trim().replace(/\/$/, ''))
     .filter(Boolean);
+
+console.log('Allowed Origins:', allowedOrigins);
 
 const corsOptions = {
     origin: function (origin, callback) {
@@ -39,9 +43,8 @@ const corsOptions = {
     allowedHeaders: ['Content-Type', 'Authorization']
 };
 
-// CORS must come before routes
+// Middleware
 app.use(cors(corsOptions));
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -56,8 +59,11 @@ app.use('/api/auth', router);
 // Error handler
 app.use((err, req, res, next) => {
     console.error('Server Error:', err.message);
+
     res.status(500).json({
-        message: 'Internal server error'
+        message: err.message === 'Origin not allowed by CORS'
+            ? 'CORS error: Origin not allowed'
+            : 'Internal server error'
     });
 });
 
@@ -73,3 +79,4 @@ connectDb()
         console.error('Database connection failed:', error.message);
         process.exit(1);
     });
+
