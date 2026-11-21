@@ -21,7 +21,7 @@ const port = process.env.PORT || 8000;
 
 // Allowed frontend URLs
 const allowedOrigins = (
-    process.env.FRONTEND_URL || 'http://localhost:5173'
+    process.env.FRONTEND_URL || 'https://ai-bot-6ywf-3omfqbacv-bairagan.vercel.app'
 )
     .split(',')
     .map(origin => origin.trim().replace(/\/$/, ''))
