@@ -1,3 +1,4 @@
+
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
@@ -5,8 +6,11 @@ const path = require('path');
 const fs = require('fs');
 
 const rootEnvPath = path.resolve(__dirname, '../.env');
+
 dotenv.config({
-    path: fs.existsSync(rootEnvPath) ? rootEnvPath : path.resolve(__dirname, '.env')
+    path: fs.existsSync(rootEnvPath)
+        ? rootEnvPath
+        : path.resolve(__dirname, '.env')
 });
 
 const router = require('./routes/signRoutes');
@@ -14,16 +18,30 @@ const connectDb = require('./config/db');
 
 const app = express();
 const port = process.env.PORT || 8000;
-const allowedOrigins = (process.env.FrontendUrl || process.env.FrontendUrl|| 'https://ai-bot-6ywf.vercel.app')
-    .split(',').map((origin) => origin.trim()).filter(Boolean);
 
-app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
-        return callback(new Error('Origin is not allowed by CORS'));
+// Read allowed frontend URLs
+const allowedOrigins = (process.env.FRONTEND_URL || '')
+    .split(',')
+    .map(origin => origin.trim().replace(/\/$/, ''))
+    .filter(Boolean);
+
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+
+        console.log('Blocked CORS Origin:', origin);
+        return callback(new Error('Origin not allowed by CORS'));
     },
-    credentials: true
-}));
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+// CORS must come before routes
+app.use(cors(corsOptions));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -32,17 +50,26 @@ app.get('/health', (req, res) => {
     res.json({ status: 'ok' });
 });
 
+// API routes
 app.use('/api/auth', router);
 
-// Global error handler
+// Error handler
 app.use((err, req, res, next) => {
-    console.error('Unhandled error:', err.message);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error('Server Error:', err.message);
+    res.status(500).json({
+        message: 'Internal server error'
+    });
 });
 
+// Start server
 connectDb()
-    .then(() => app.listen(port, () => console.log(`Server listening on port ${port}`)))
-    .catch((error) => {
-        console.error('Server startup failed:', error.message);
+    .then(() => {
+        app.listen(port, () => {
+            console.log(`Server running on port ${port}`);
+            console.log('Allowed origins:', allowedOrigins);
+        });
+    })
+    .catch(error => {
+        console.error('Database connection failed:', error.message);
         process.exit(1);
     });
