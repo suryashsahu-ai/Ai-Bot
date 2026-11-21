@@ -238,7 +238,7 @@ const ChatArea = forwardRef((_props, ref) => {
               className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               {message.type === 'bot' && (
-                <div className="w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center shrink-0 mr-2 mt-1">
+                <div className="w-7 h-7 rounded-full bg-linear-to-r from-blue-500 to-purple-600 flex items-center justify-center shrink-0 mr-2 mt-1">
                   <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
@@ -251,7 +251,7 @@ const ChatArea = forwardRef((_props, ref) => {
                     : 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-bl-sm shadow-sm border border-gray-100 dark:border-gray-700'
                 }`}
               >
-                <p className="whitespace-pre-wrap break-words">{message.content}</p>
+                <p className="whitespace-pre-wrap wrap-break-word">{message.content}</p>
                 <p className={`text-xs mt-1.5 ${message.type === 'user' ? 'text-blue-200' : 'text-gray-400 dark:text-gray-500'}`}>
                   {message.timestamp}
                 </p>
@@ -263,7 +263,7 @@ const ChatArea = forwardRef((_props, ref) => {
         {/* Typing indicator */}
         {isTyping && (
           <div className="flex justify-start">
-            <div className="w-7 h-7 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center shrink-0 mr-2">
+            <div className="w-7 h-7 rounded-full bg-linear-to-r from-blue-500 to-purple-600 flex items-center justify-center shrink-0 mr-2">
               <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
@@ -309,7 +309,7 @@ const ChatArea = forwardRef((_props, ref) => {
                 }}
                 onKeyDown={handleKeyDown}
                 placeholder="Type your message... (Enter to send, Shift+Enter for new line)"
-                className="w-full min-h-[44px] text-sm sm:text-base bg-transparent text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 resize-none focus:outline-none px-4 py-3 pr-12"
+                className="w-full min-h-11 text-sm sm:text-base bg-transparent text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 resize-none focus:outline-none px-4 py-3 pr-12"
                 rows={1}
                 style={{ maxHeight: '200px' }}
                 disabled={isTyping}

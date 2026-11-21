@@ -14,7 +14,7 @@ const connectDb = require('./config/db');
 
 const app = express();
 const port = process.env.PORT || 8000;
-const allowedOrigins = (process.env.FRONTEND_URL || process.env.FrontendUrl || 'http://localhost:5173')
+const allowedOrigins = (process.env.FrontendUrl || process.env.FrontendUrl|| 'https://ai-bot-6ywf.vercel.app')
     .split(',').map((origin) => origin.trim()).filter(Boolean);
 
 app.use(cors({

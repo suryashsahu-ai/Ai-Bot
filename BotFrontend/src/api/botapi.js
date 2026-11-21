@@ -1,5 +1,5 @@
 const API_BASE = `${(import.meta.env.VITE_API_URL || '').replace(/\/$/, '')}/api/auth`
-
+console.log(API_BASE)
 export const authApi = {
   login: (email, password) =>
     fetch(`${API_BASE}/login`, {
@@ -58,4 +58,5 @@ export const chatApi = {
       },
       body: JSON.stringify({ content, messages })
     })
+    
 }
