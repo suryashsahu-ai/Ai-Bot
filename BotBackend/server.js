@@ -23,7 +23,7 @@ const port = process.env.PORT || 8000;
 
 const allowedOrigins = [
     'http://localhost:5173',
-    'https://ai-bot-6ywf-3omfqbacv-bairagan.vercel.app'
+    'https://ai-bot-eta-livid.vercel.app'
 ];
 
 const corsOptions = {
